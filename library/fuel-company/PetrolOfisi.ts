@@ -5,7 +5,7 @@ class PetrolOfisi implements FuelCompany {
   private fuel_url: string =
     "https://www.petrolofisi.com.tr/akaryakit-fiyatlari";
 
-  public async getFuelPrices(): Promise<any[]> {
+  public async getFuelPrices(): Promise<string[]> {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
@@ -19,6 +19,21 @@ class PetrolOfisi implements FuelCompany {
     await browser.close();
 
     return parsedfuelData;
+  }
+
+  public async getCities() {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    await page.goto(this.fuel_url, { waitUntil: "networkidle2" });
+    await page.waitForSelector("ul", { visible: true });
+
+    const citiesData = await this.getCitiesData(page);
+
+    await page.close();
+    await browser.close();
+
+    return citiesData;
   }
 
   private async getFuelData(page: Page) {
@@ -51,6 +66,21 @@ class PetrolOfisi implements FuelCompany {
     }
 
     return parsedData;
+  }
+
+  private async getCitiesData(page: Page) {
+    return await page.evaluate(`(async () => {
+      return await new Promise((resolve) => {
+        setTimeout(() => {
+          const array = [];
+          $("select option").each(function(){
+              array.push(this.innerText);
+          });
+          array.shift();
+          resolve(array);
+        }, 500);
+      });
+    })()`);
   }
 }
 
