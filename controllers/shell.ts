@@ -1,41 +1,11 @@
 import { Request, Response } from "express";
-import Shell, { UnknownCityError } from "../library/fuel-company/Shell";
+import Shell from "../library/fuel-company/Shell";
+import { citiesHandler, fuelPricesHandler, handleError, queryString } from "./fuel-company";
 
-function queryString(value: unknown): string | undefined {
-    return typeof value === "string" && value.trim() ? value.trim() : undefined;
-}
+const shell = new Shell();
 
-function handleError(res: Response, error: unknown) {
-    const status = error instanceof UnknownCityError ? 404 : 500;
-    return res.status(status).json({
-        message: (error as any).message
-    });
-}
-
-export async function getFuelPrices(req: Request, res: Response) {
-    try {
-        const shell = new Shell();
-        const fuelPrices = await shell.getFuelPrices(
-            queryString(req.query.city),
-            queryString(req.query.county)
-        );
-
-        return res.json(fuelPrices);
-    } catch (error) {
-        return handleError(res, error);
-    }
-}
-
-export async function getCities(req: Request, res: Response) {
-    try {
-        const shell = new Shell();
-        const cities = await shell.getCities();
-
-        return res.json(cities);
-    } catch (error) {
-        return handleError(res, error);
-    }
-}
+export const getFuelPrices = fuelPricesHandler(shell);
+export const getCities = citiesHandler(shell);
 
 export async function getCounties(req: Request, res: Response) {
     const city = queryString(req.query.city);
@@ -46,10 +16,7 @@ export async function getCounties(req: Request, res: Response) {
     }
 
     try {
-        const shell = new Shell();
-        const counties = await shell.getCounties(city);
-
-        return res.json(counties);
+        return res.json(await shell.getCounties(city));
     } catch (error) {
         return handleError(res, error);
     }
@@ -57,10 +24,7 @@ export async function getCounties(req: Request, res: Response) {
 
 export async function getProducts(req: Request, res: Response) {
     try {
-        const shell = new Shell();
-        const products = await shell.getProducts();
-
-        return res.json(products);
+        return res.json(await shell.getProducts());
     } catch (error) {
         return handleError(res, error);
     }

@@ -1,95 +1,124 @@
-import puppeteer, { Page } from "puppeteer";
-import { FuelCompany } from "../base/FuelCompany";
+import {
+  City,
+  FuelCompany,
+  FuelPrice,
+  FuelPriceEntry,
+  FuelType,
+  PriceFilter,
+  UnknownCityError,
+} from "../base/FuelCompany";
+import {
+  cityMatches,
+  classifyFuel,
+  decodeHtml,
+  htmlToLines,
+  parsePriceText,
+} from "../base/helpers";
 
+/**
+ * Petrol Ofisi renders its city price list server-side at
+ * https://www.petrolofisi.com.tr/akaryakit-fiyatlari, so a plain HTTP GET and a
+ * bit of HTML parsing is enough; no browser is needed.
+ *
+ * Each city is a `<li class="list-group-item p-3" data-district-id="03431">`
+ * whose text is the city name followed by alternating product-name / price
+ * elements. The set of products changes over time, so labels are paired with
+ * values dynamically and then classified into brand-independent fuel types.
+ */
 class PetrolOfisi implements FuelCompany {
-  private fuel_url: string =
-    "https://www.petrolofisi.com.tr/akaryakit-fiyatlari";
+  public readonly brand = "petrol-ofisi";
+  private fuel_url: string = "https://www.petrolofisi.com.tr/akaryakit-fiyatlari";
 
-  public async getFuelPrices(): Promise<string[]> {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
+  public async getFuelPrices(filter: PriceFilter = {}): Promise<FuelPriceEntry[]> {
+    const html = await this.fetchHtml();
+    const entries = this.parseFuelData(html);
 
-    await page.goto(this.fuel_url, { waitUntil: "networkidle2" });
-    await page.waitForSelector("ul", { visible: true });
+    if (!filter.city) return entries;
 
-    const fuelData = await this.getFuelData(page);
-    const parsedfuelData = this.parseFuelData(fuelData as string[]);
-
-    await page.close();
-    await browser.close();
-
-    return parsedfuelData;
+    const wanted = filter.city;
+    const matched = entries.filter((e) => cityMatches(wanted, e.cityCode, e.city));
+    if (matched.length === 0) throw new UnknownCityError(wanted);
+    return matched;
   }
 
-  public async getCities() {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-
-    await page.goto(this.fuel_url, { waitUntil: "networkidle2" });
-    await page.waitForSelector("ul", { visible: true });
-
-    const citiesData = await this.getCitiesData(page);
-
-    await page.close();
-    await browser.close();
-
-    return citiesData;
+  public async getCities(): Promise<City[]> {
+    const html = await this.fetchHtml();
+    return this.parseCities(html);
   }
 
-  private async getFuelData(page: Page) {
-    return await page.evaluate(`(async () => {
-        return await new Promise((resolve) => {
-          setTimeout(() => {
-            const array = [];
-            const list = $("li.list-group-item.p-3");
-            for (let i = 0; i <= list.length - 1; i++) {
-              array.push(list[i].innerText);
-            }
-            resolve(array);
-          }, 500);
-        });
-      })()`);
+  private async fetchHtml(): Promise<string> {
+    const response = await fetch(this.fuel_url, {
+      headers: {
+        Accept: "text/html",
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36",
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Petrol Ofisi responded with ${response.status}`);
+    }
+    return await response.text();
   }
 
-  /**
-   * Each list item's innerText is the city name followed by alternating
-   * "<fuel name>\n<price>" lines. The set of fuels changes over time
-   * (V/Pro Diesel is gone; Gazyağı, Kalorifer Yakıtı and Fuel Oil were added),
-   * so pair labels with values instead of relying on fixed indexes.
-   */
-  private parseFuelData(fuelData: string[]): any[] {
-    const parsedData: any[] = [];
+  private parseFuelData(html: string): FuelPriceEntry[] {
+    const itemPattern =
+      /<li\s+class="list-group-item p-3"([^>]*)>([\s\S]*?)<\/li>/g;
+    const entries: FuelPriceEntry[] = [];
 
-    for (const line of fuelData) {
-      const lines = line
-        .split("\n")
-        .map((value) => value.trim())
-        .filter((value) => value.length > 0);
+    for (const match of html.matchAll(itemPattern)) {
+      const attributes = match[1];
+      const lines = htmlToLines(match[2]);
+      if (lines.length === 0) continue;
 
-      const row: Record<string, string> = { city: lines[0] };
+      const districtId = attributes.match(/data-district-id="(\d+)"/)?.[1] ?? null;
+      const prices: Partial<Record<FuelType, FuelPrice>> = {};
+
       for (let i = 1; i + 1 < lines.length; i += 2) {
-        row[lines[i]] = lines[i + 1];
+        const productName = lines[i];
+        const parsed = parsePriceText(lines[i + 1]);
+        const fuelType = classifyFuel(productName);
+        if (!parsed || !fuelType) continue;
+
+        prices[fuelType] = {
+          price: parsed.price,
+          unit: parsed.unit,
+          currency: "TRY",
+          productName,
+        };
       }
 
-      parsedData.push(row);
+      entries.push({
+        brand: this.brand,
+        // district ids look like "03431": 3-digit city code + 2-digit district.
+        cityCode: districtId ? districtId.slice(0, 3) : null,
+        city: lines[0],
+        countyCode: null,
+        county: null,
+        prices,
+      });
     }
 
-    return parsedData;
+    if (entries.length === 0) {
+      throw new Error("Could not find any price rows on the Petrol Ofisi page; the markup may have changed.");
+    }
+
+    return entries;
   }
 
-  private async getCitiesData(page: Page) {
-    return await page.evaluate(`(async () => {
-      return await new Promise((resolve) => {
-        setTimeout(() => {
-          const array = [];
-          $("select option").each(function(){
-              array.push(this.innerText);
-          });
-          array.shift();
-          resolve(array);
-        }, 500);
+  private parseCities(html: string): City[] {
+    const select = html.match(/<select[^>]*cities-dropdown[^>]*>([\s\S]*?)<\/select>/);
+    if (!select) {
+      throw new Error("Could not find the city dropdown on the Petrol Ofisi page; the markup may have changed.");
+    }
+
+    const cities: City[] = [];
+    for (const option of select[1].matchAll(/<option\s+value="(\d+)"[^>]*>([^<]*)<\/option>/g)) {
+      cities.push({
+        code: option[1].padStart(3, "0"),
+        name: decodeHtml(option[2]).trim(),
       });
-    })()`);
+    }
+    return cities;
   }
 }
 

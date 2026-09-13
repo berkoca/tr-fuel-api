@@ -1,4 +1,13 @@
-import { FuelCompany } from "../base/FuelCompany";
+import {
+  City,
+  FuelCompany,
+  FuelPrice,
+  FuelPriceEntry,
+  FuelType,
+  PriceFilter,
+  UnknownCityError,
+} from "../base/FuelCompany";
+import { classifyFuel, normalizeText, normalizeUnit } from "../base/helpers";
 
 interface ShellProduct {
   fepProductCode: string;
@@ -35,35 +44,31 @@ export interface Product {
   description: string;
   unit: string | null;
   currency: string;
+  fuelType: FuelType | null;
 }
 
-export class UnknownCityError extends Error {
-  constructor(city: string) {
-    super(`Unknown city: ${city}`);
-    this.name = "UnknownCityError";
-  }
+export interface County {
+  code: string;
+  name: string;
 }
 
 /**
  * Shell Türkiye publishes its pump prices through the panel embedded in
  * https://www.shell.com.tr/suruculer/shell-yakitlari/akaryakit-pompa-satis-fiyatlari.html
  * (an iframe of https://pompafiyat.turkiyeshell.com/prices). The panel is a
- * React app fed by a public JSON API, so we read that API directly instead of
- * rendering the page in a browser.
+ * React app fed by a public JSON API, so we read that API directly.
+ *
+ * Prices are published per county (ilçe), grouped by city (il).
  */
 class Shell implements FuelCompany {
+  public readonly brand = "shell";
   private api_url: string = "https://pompafiyat.turkiyeshell.com/api/Public";
 
-  /**
-   * Prices are published per county (ilçe), grouped by city (il).
-   * `city` may be a city code ("034" or "34") or a city name ("İstanbul").
-   * `county` must be a county code ("034004").
-   */
-  public async getFuelPrices(city?: string, county?: string): Promise<any[]> {
+  public async getFuelPrices(filter: PriceFilter = {}): Promise<FuelPriceEntry[]> {
     const params = new URLSearchParams();
-    const cityCode = await this.resolveCityCode(city);
+    const cityCode = await this.resolveCityCode(filter.city);
     if (cityCode) params.set("citycode", cityCode);
-    if (county) params.set("countycode", county);
+    if (filter.county) params.set("countycode", filter.county);
 
     const query = params.toString();
     const data = await this.fetchJson<ShellPricesResponse>(
@@ -71,33 +76,35 @@ class Shell implements FuelCompany {
     );
     const products = this.parseProducts(data.products);
 
-    return data.groups.map((group) => ({
-      cityCode: group.cityCode,
-      city: group.cityName,
-      counties: group.counties.map((c) => ({
-        countyCode: c.countyCode,
-        county: c.countyName,
-        prices: this.parsePrices(c.prices ?? {}, products),
-      })),
-    }));
+    const entries: FuelPriceEntry[] = [];
+    for (const group of data.groups) {
+      for (const county of group.counties) {
+        entries.push({
+          brand: this.brand,
+          cityCode: group.cityCode,
+          city: group.cityName,
+          countyCode: county.countyCode,
+          county: county.countyName,
+          prices: this.parsePrices(county.prices ?? {}, products),
+        });
+      }
+    }
+    return entries;
   }
 
-  public async getCities() {
+  public async getCities(): Promise<City[]> {
     const cities = await this.fetchJson<ShellCity[]>("/cities");
-    return cities.map((c) => ({ cityCode: c.cityCode, city: c.cityName }));
+    return cities.map((c) => ({ code: c.cityCode, name: c.cityName }));
   }
 
-  public async getCounties(city: string) {
+  public async getCounties(city: string): Promise<County[]> {
     const cityCode = await this.resolveCityCode(city);
     if (!cityCode) throw new UnknownCityError(city);
 
     const counties = await this.fetchJson<ShellCounty[]>(
       `/counties?citycode=${encodeURIComponent(cityCode)}`
     );
-    return counties.map((c) => ({
-      countyCode: c.countyCode,
-      county: c.countyName,
-    }));
+    return counties.map((c) => ({ code: c.countyCode, name: c.countyName }));
   }
 
   public async getProducts(): Promise<Product[]> {
@@ -120,24 +127,10 @@ class Shell implements FuelCompany {
     if (!city) return undefined;
     if (/^\d+$/.test(city)) return city.padStart(3, "0");
 
-    const wanted = this.normalize(city);
-    const match = (await this.getCities()).find(
-      (c) => this.normalize(c.city) === wanted
-    );
-    if (!match) throw new UnknownCityError(city);
-    return match.cityCode;
-  }
-
-  /** Shell uses ASCII upper-case names ("ISTANBUL", "AGRI"); fold Turkish letters the same way. */
-  private normalize(value: string): string {
-    const map: Record<string, string> = {
-      ç: "c", Ç: "C", ğ: "g", Ğ: "G", ı: "i", İ: "I",
-      ö: "o", Ö: "O", ş: "s", Ş: "S", ü: "u", Ü: "U",
-    };
-    return value
-      .trim()
-      .replace(/[çÇğĞıİöÖşŞüÜ]/g, (ch) => map[ch])
-      .toUpperCase();
+    const wanted = normalizeText(city);
+    const match = (await this.getCities()).find((c) => normalizeText(c.name) === wanted);
+    if (!match || !match.code) throw new UnknownCityError(city);
+    return match.code;
   }
 
   private parseProducts(products: ShellProduct[]): Product[] {
@@ -150,28 +143,37 @@ class Shell implements FuelCompany {
         .replace(/\s+/g, " ")
         .trim();
       const unit = text.match(/\(([^)]+)\)/);
+      const description = text.replace(/\s*\([^)]*\)\s*/, " ").trim();
 
       return {
         code: p.fepProductCode.trim(),
         name: p.genProductName.trim(),
-        description: text.replace(/\s*\([^)]*\)\s*/, " ").trim(),
-        unit: unit ? unit[1] : null,
+        description,
+        unit: unit ? normalizeUnit(unit[1]) : null,
         currency: p.currCode,
+        fuelType: classifyFuel(description) ?? classifyFuel(p.genProductName),
       };
     });
   }
 
-  /** Price map is keyed by padded product codes ("37  "); re-key it by product name. */
+  /** Price map is keyed by padded product codes ("37  "); re-key it by fuel type. */
   private parsePrices(
     prices: Record<string, number>,
     products: Product[]
-  ): Record<string, number> {
-    const byCode = new Map(products.map((p) => [p.code, p.name]));
-    const parsed: Record<string, number> = {};
+  ): Partial<Record<FuelType, FuelPrice>> {
+    const byCode = new Map(products.map((p) => [p.code, p]));
+    const parsed: Partial<Record<FuelType, FuelPrice>> = {};
 
     for (const [rawCode, price] of Object.entries(prices)) {
-      const code = rawCode.trim();
-      parsed[byCode.get(code) ?? code] = price;
+      const product = byCode.get(rawCode.trim());
+      if (!product || !product.fuelType) continue;
+
+      parsed[product.fuelType] = {
+        price,
+        unit: product.unit ?? "",
+        currency: product.currency,
+        productName: product.description,
+      };
     }
 
     return parsed;
