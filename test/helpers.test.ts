@@ -7,7 +7,7 @@ import {
   normalizeText,
   normalizeUnit,
   parsePriceText,
-} from "../library/base/helpers";
+} from "../src/library/base/helpers";
 
 describe("normalizeText", () => {
   it("folds Turkish letters and upper-cases", () => {

@@ -1,7 +1,7 @@
 import { AddressInfo } from "net";
 import { Server } from "http";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import app from "../app";
+import app from "../src/app";
 import { fixture, mockFetch } from "./support";
 
 let server: Server;

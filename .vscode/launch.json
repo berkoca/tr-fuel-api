@@ -12,7 +12,7 @@
                 "-r",
                 "ts-node/register"
             ],
-            "program": "${workspaceFolder}\\index.ts"
+            "program": "${workspaceFolder}/src/index.ts"
         }
     ]
 }

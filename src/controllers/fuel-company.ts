@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { FuelCompany, UnknownCityError } from "../library/base/FuelCompany";
+import { FuelCompany, UnknownCityError } from "../library/base/fuel-company";
 
 export function queryString(value: unknown): string | undefined {
     return typeof value === "string" && value.trim() ? value.trim() : undefined;

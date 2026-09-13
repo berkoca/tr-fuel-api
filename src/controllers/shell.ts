@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Shell from "../library/fuel-company/Shell";
+import Shell from "../library/fuel-company/shell";
 import { citiesHandler, fuelPricesHandler, handleError, queryString } from "./fuel-company";
 
 const shell = new Shell();

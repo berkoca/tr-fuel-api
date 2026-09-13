@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { fetchJson, fetchText } from "../library/base/http";
+import { fetchJson, fetchText } from "../src/library/base/http";
 import { mockFetch } from "./support";
 
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import Shell from "../library/fuel-company/Shell";
-import { UnknownCityError } from "../library/base/FuelCompany";
+import Shell from "../src/library/fuel-company/shell";
+import { UnknownCityError } from "../src/library/base/fuel-company";
 import { calledUrls, fixture, mockFetch } from "./support";
 
 const API = "pompafiyat.turkiyeshell.com/api/Public";

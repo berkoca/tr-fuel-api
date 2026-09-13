@@ -6,7 +6,7 @@ import {
   FuelType,
   PriceFilter,
   UnknownCityError,
-} from "../base/FuelCompany";
+} from "../base/fuel-company";
 import {
   cityMatches,
   classifyFuel,

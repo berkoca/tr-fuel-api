@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 import { afterEach, vi } from "vitest";
-import { upstreamCache } from "../library/base/cache";
+import { upstreamCache } from "../src/library/base/cache";
 
 // Every test file gets a clean fetch stub and an empty upstream cache.
 afterEach(() => {

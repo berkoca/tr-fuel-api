@@ -1,4 +1,4 @@
-import { FuelType } from "./FuelCompany";
+import { FuelType } from "./fuel-company";
 
 const TURKISH_MAP: Record<string, string> = {
   ç: "c", Ç: "C", ğ: "g", Ğ: "G", ı: "i", İ: "I",

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { TtlCache } from "../library/base/cache";
+import { TtlCache } from "../src/library/base/cache";
 
 describe("TtlCache", () => {
   it("serves a cached value until it expires, then reloads", async () => {

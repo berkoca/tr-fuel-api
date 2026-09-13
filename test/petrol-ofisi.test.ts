@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import PetrolOfisi from "../library/fuel-company/PetrolOfisi";
-import { UnknownCityError } from "../library/base/FuelCompany";
+import PetrolOfisi from "../src/library/fuel-company/petrol-ofisi";
+import { UnknownCityError } from "../src/library/base/fuel-company";
 import { fixture, mockFetch } from "./support";
 
 const PAGE = "petrolofisi.com.tr/akaryakit-fiyatlari";

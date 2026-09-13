@@ -6,7 +6,7 @@ import {
   FuelType,
   PriceFilter,
   UnknownCityError,
-} from "../base/FuelCompany";
+} from "../base/fuel-company";
 import { classifyFuel, normalizeText, normalizeUnit } from "../base/helpers";
 import { cachedJson } from "../base/http";
 
