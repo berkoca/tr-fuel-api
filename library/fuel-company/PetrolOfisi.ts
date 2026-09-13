@@ -51,18 +51,27 @@ class PetrolOfisi implements FuelCompany {
       })()`);
   }
 
+  /**
+   * Each list item's innerText is the city name followed by alternating
+   * "<fuel name>\n<price>" lines. The set of fuels changes over time
+   * (V/Pro Diesel is gone; Gazyağı, Kalorifer Yakıtı and Fuel Oil were added),
+   * so pair labels with values instead of relying on fixed indexes.
+   */
   private parseFuelData(fuelData: string[]): any[] {
     const parsedData: any[] = [];
 
     for (const line of fuelData) {
-      const splittedString = line.split("\n");
-      parsedData.push({
-        city: splittedString[0],
-        "V/Max Kurşunsuz 95": splittedString[2],
-        "V/Max Diesel": splittedString[4],
-        "V/Pro Diesel": splittedString[6],
-        "POGaz LPG": splittedString[8],
-      });
+      const lines = line
+        .split("\n")
+        .map((value) => value.trim())
+        .filter((value) => value.length > 0);
+
+      const row: Record<string, string> = { city: lines[0] };
+      for (let i = 1; i + 1 < lines.length; i += 2) {
+        row[lines[i]] = lines[i + 1];
+      }
+
+      parsedData.push(row);
     }
 
     return parsedData;
