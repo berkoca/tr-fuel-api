@@ -11,7 +11,10 @@ export class TtlCache {
   private entries = new Map<string, Entry>();
   private inFlight = new Map<string, Promise<unknown>>();
 
-  constructor(private ttlMs: number, private now: () => number = Date.now) {}
+  constructor(
+    private ttlMs: number,
+    private now: () => number = Date.now
+  ) {}
 
   async getOrLoad<T>(key: string, loader: () => Promise<T>): Promise<T> {
     const cached = this.entries.get(key);

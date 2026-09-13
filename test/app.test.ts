@@ -15,7 +15,6 @@ beforeAll(async () => {
 
 afterAll(() => new Promise<void>((resolve) => server.close(() => resolve())));
 
-
 function mockUpstreams() {
   mockFetch({
     "petrolofisi.com.tr/akaryakit-fiyatlari": fixture("petrol-ofisi.html"),

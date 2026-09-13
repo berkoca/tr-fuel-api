@@ -3,13 +3,7 @@
  * onto these keys so API consumers get the same shape regardless of source.
  */
 export type FuelType =
-  | "benzin"
-  | "dizel"
-  | "gazYagi"
-  | "lpg"
-  | "kaloriferYakiti"
-  | "fuelOil"
-  | "yuksekKukurtluFuelOil";
+  "benzin" | "dizel" | "gazYagi" | "lpg" | "kaloriferYakiti" | "fuelOil" | "yuksekKukurtluFuelOil";
 
 export const FUEL_TYPES: FuelType[] = [
   "benzin",

@@ -34,12 +34,18 @@ export async function fetchResponse(url: string, options: RequestOptions = {}): 
 }
 
 export async function fetchText(url: string, options: RequestOptions = {}): Promise<string> {
-  const response = await fetchResponse(url, { ...options, headers: { Accept: "text/html", ...options.headers } });
+  const response = await fetchResponse(url, {
+    ...options,
+    headers: { Accept: "text/html", ...options.headers },
+  });
   return await response.text();
 }
 
 export async function fetchJson<T>(url: string, options: RequestOptions = {}): Promise<T> {
-  const response = await fetchResponse(url, { ...options, headers: { Accept: "application/json", ...options.headers } });
+  const response = await fetchResponse(url, {
+    ...options,
+    headers: { Accept: "application/json", ...options.headers },
+  });
   return (await response.json()) as T;
 }
 

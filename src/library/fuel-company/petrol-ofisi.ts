@@ -52,8 +52,7 @@ class PetrolOfisi implements FuelCompany {
   }
 
   private parseFuelData(html: string): FuelPriceEntry[] {
-    const itemPattern =
-      /<li\s+class="list-group-item p-3"([^>]*)>([\s\S]*?)<\/li>/g;
+    const itemPattern = /<li\s+class="list-group-item p-3"([^>]*)>([\s\S]*?)<\/li>/g;
     const entries: FuelPriceEntry[] = [];
 
     for (const match of html.matchAll(itemPattern)) {
@@ -90,7 +89,9 @@ class PetrolOfisi implements FuelCompany {
     }
 
     if (entries.length === 0) {
-      throw new Error("Could not find any price rows on the Petrol Ofisi page; the markup may have changed.");
+      throw new Error(
+        "Could not find any price rows on the Petrol Ofisi page; the markup may have changed."
+      );
     }
 
     return entries;
@@ -99,7 +100,9 @@ class PetrolOfisi implements FuelCompany {
   private parseCities(html: string): City[] {
     const select = html.match(/<select[^>]*cities-dropdown[^>]*>([\s\S]*?)<\/select>/);
     if (!select) {
-      throw new Error("Could not find the city dropdown on the Petrol Ofisi page; the markup may have changed.");
+      throw new Error(
+        "Could not find the city dropdown on the Petrol Ofisi page; the markup may have changed."
+      );
     }
 
     const cities: City[] = [];

@@ -2,7 +2,6 @@ import { describe, expect, it, vi } from "vitest";
 import { fetchJson, fetchText } from "../src/library/base/http";
 import { mockFetch } from "./support";
 
-
 describe("fetchText / fetchJson", () => {
   it("sends a browser user agent and the matching Accept header", async () => {
     const stub = mockFetch({ "example.test/page": "<p>hi</p>" });
@@ -30,10 +29,11 @@ describe("fetchText / fetchJson", () => {
   it("aborts and reports a timeout when the upstream hangs", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn((_url: string, init?: RequestInit) =>
-        new Promise<Response>((_, reject) => {
-          init?.signal?.addEventListener("abort", () => reject(init.signal!.reason));
-        })
+      vi.fn(
+        (_url: string, init?: RequestInit) =>
+          new Promise<Response>((_, reject) => {
+            init?.signal?.addEventListener("abort", () => reject(init.signal!.reason));
+          })
       )
     );
 

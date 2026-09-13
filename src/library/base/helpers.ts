@@ -1,8 +1,18 @@
 import { FuelType } from "./fuel-company";
 
 const TURKISH_MAP: Record<string, string> = {
-  ç: "c", Ç: "C", ğ: "g", Ğ: "G", ı: "i", İ: "I",
-  ö: "o", Ö: "O", ş: "s", Ş: "S", ü: "u", Ü: "U",
+  ç: "c",
+  Ç: "C",
+  ğ: "g",
+  Ğ: "G",
+  ı: "i",
+  İ: "I",
+  ö: "o",
+  Ö: "O",
+  ş: "s",
+  Ş: "S",
+  ü: "u",
+  Ü: "U",
 };
 
 /** Fold Turkish letters to ASCII, upper-case and collapse whitespace, for comparisons. */
@@ -58,13 +68,19 @@ export function htmlToLines(html: string): string[] {
 
 export function decodeHtml(text: string): string {
   const named: Record<string, string> = {
-    amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " ",
+    amp: "&",
+    lt: "<",
+    gt: ">",
+    quot: '"',
+    apos: "'",
+    nbsp: " ",
   };
   return text.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (whole, entity: string) => {
     if (entity[0] === "#") {
-      const code = entity[1].toLowerCase() === "x"
-        ? parseInt(entity.slice(2), 16)
-        : parseInt(entity.slice(1), 10);
+      const code =
+        entity[1].toLowerCase() === "x"
+          ? parseInt(entity.slice(2), 16)
+          : parseInt(entity.slice(1), 10);
       return Number.isNaN(code) ? whole : String.fromCodePoint(code);
     }
     return named[entity.toLowerCase()] ?? whole;
@@ -72,11 +88,7 @@ export function decodeHtml(text: string): string {
 }
 
 /** Match a user-supplied city (code or name) against a city code and name. */
-export function cityMatches(
-  wanted: string,
-  cityCode: string | null,
-  cityName: string
-): boolean {
+export function cityMatches(wanted: string, cityCode: string | null, cityName: string): boolean {
   const input = wanted.trim();
   if (/^\d+$/.test(input)) {
     return cityCode !== null && cityCode.padStart(3, "0") === input.padStart(3, "0");

@@ -5,7 +5,6 @@ import { fixture, mockFetch } from "./support";
 
 const PAGE = "petrolofisi.com.tr/akaryakit-fiyatlari";
 
-
 describe("PetrolOfisi.getFuelPrices", () => {
   it("parses every city row into the unified shape", async () => {
     mockFetch({ [PAGE]: fixture("petrol-ofisi.html") });
@@ -28,7 +27,12 @@ describe("PetrolOfisi.getFuelPrices", () => {
         benzin: { price: 80.26, unit: "TL/LT", currency: "TRY", productName: "V/Max Kurşunsuz 95" },
         dizel: { price: 89.01, unit: "TL/LT", currency: "TRY", productName: "V/Max Diesel" },
         gazYagi: { price: 98.66, unit: "TL/LT", currency: "TRY", productName: "Gazyağı" },
-        kaloriferYakiti: { price: 69.06, unit: "TL/KG", currency: "TRY", productName: "Kalorifer Yakıtı" },
+        kaloriferYakiti: {
+          price: 69.06,
+          unit: "TL/KG",
+          currency: "TRY",
+          productName: "Kalorifer Yakıtı",
+        },
         fuelOil: { price: 49.84, unit: "TL/KG", currency: "TRY", productName: "Fuel Oil" },
         lpg: { price: 34.99, unit: "TL/LT", currency: "TRY", productName: "PO/gaz Otogaz" },
       },

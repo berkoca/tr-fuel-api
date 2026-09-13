@@ -17,7 +17,6 @@ function mockShell(extra: Record<string, { status: number; body?: string }> = {}
   });
 }
 
-
 describe("Shell.getFuelPrices", () => {
   it("flattens city groups into one row per county in the unified shape", async () => {
     mockShell();
@@ -32,12 +31,32 @@ describe("Shell.getFuelPrices", () => {
       countyCode: "001002",
       county: "ALADAG",
       prices: {
-        benzin: { price: 82.06, unit: "TL/LT", currency: "TRY", productName: "K.Benzin 95 Oktan Shell V-Power" },
-        dizel: { price: 90.94, unit: "TL/LT", currency: "TRY", productName: "Motorin Shell V-Power Diesel" },
-        lpg: { price: 35.79, unit: "TL/LT", currency: "TRY", productName: "Otogaz Shell Autogas LPG" },
+        benzin: {
+          price: 82.06,
+          unit: "TL/LT",
+          currency: "TRY",
+          productName: "K.Benzin 95 Oktan Shell V-Power",
+        },
+        dizel: {
+          price: 90.94,
+          unit: "TL/LT",
+          currency: "TRY",
+          productName: "Motorin Shell V-Power Diesel",
+        },
+        lpg: {
+          price: 35.79,
+          unit: "TL/LT",
+          currency: "TRY",
+          productName: "Otogaz Shell Autogas LPG",
+        },
         gazYagi: { price: 102.09, unit: "TL/LT", currency: "TRY", productName: "Gaz Yagı" },
         kaloriferYakiti: { price: 72.9, unit: "TL/KG", currency: "TRY", productName: "Kalyak" },
-        yuksekKukurtluFuelOil: { price: 45.56, unit: "TL/KG", currency: "TRY", productName: "Yüksek Kükürtlü Fuel Oil" },
+        yuksekKukurtluFuelOil: {
+          price: 45.56,
+          unit: "TL/KG",
+          currency: "TRY",
+          productName: "Yüksek Kükürtlü Fuel Oil",
+        },
         fuelOil: { price: 51.3, unit: "TL/KG", currency: "TRY", productName: "Fuel Oil" },
       },
     });
