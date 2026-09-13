@@ -6,6 +6,7 @@
     "sourceMap": true,
     "outDir": "dist",
     "strict": true,
+    "skipLibCheck": true,
     "lib": ["esnext"],
     "esModuleInterop": true
   }

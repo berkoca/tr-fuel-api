@@ -1,0 +1,488 @@
+[
+  {
+    "cityCode": "001",
+    "cityName": "ADANA",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "002",
+    "cityName": "ADIYAMAN",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "003",
+    "cityName": "AFYON",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "004",
+    "cityName": "AGRI",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "068",
+    "cityName": "AKSARAY",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "005",
+    "cityName": "AMASYA",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "006",
+    "cityName": "ANKARA",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "007",
+    "cityName": "ANTALYA",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "075",
+    "cityName": "ARDAHAN",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "008",
+    "cityName": "ARTVIN",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "009",
+    "cityName": "AYDIN",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "010",
+    "cityName": "BALIKESIR",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "074",
+    "cityName": "BARTIN",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "072",
+    "cityName": "BATMAN",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "069",
+    "cityName": "BAYBURT",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "011",
+    "cityName": "BILECIK",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "012",
+    "cityName": "BINGOL",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "013",
+    "cityName": "BITLIS",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "014",
+    "cityName": "BOLU",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "015",
+    "cityName": "BURDUR",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "016",
+    "cityName": "BURSA",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "017",
+    "cityName": "CANAKKALE",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "018",
+    "cityName": "CANKIRI",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "019",
+    "cityName": "CORUM",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "020",
+    "cityName": "DENIZLI",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "021",
+    "cityName": "DIYARBAKIR",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "081",
+    "cityName": "DUZCE",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "022",
+    "cityName": "EDIRNE",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "023",
+    "cityName": "ELAZIG",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "024",
+    "cityName": "ERZINCAN",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "025",
+    "cityName": "ERZURUM",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "026",
+    "cityName": "ESKISEHIR",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "027",
+    "cityName": "GAZIANTEP",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "028",
+    "cityName": "GIRESUN",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "029",
+    "cityName": "GUMUSHANE",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "030",
+    "cityName": "HAKKARI",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "031",
+    "cityName": "HATAY",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "076",
+    "cityName": "IGDIR",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "032",
+    "cityName": "ISPARTA",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "034",
+    "cityName": "ISTANBUL",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "035",
+    "cityName": "IZMIR",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "046",
+    "cityName": "K.MARAS",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "078",
+    "cityName": "KARABUK",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "070",
+    "cityName": "KARAMAN",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "036",
+    "cityName": "KARS",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "037",
+    "cityName": "KASTAMONU",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "038",
+    "cityName": "KAYSERI",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "079",
+    "cityName": "KILIS",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "071",
+    "cityName": "KIRIKKALE",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "039",
+    "cityName": "KIRKLARELI",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "040",
+    "cityName": "KIRSEHIR",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "041",
+    "cityName": "KOCAELI",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "042",
+    "cityName": "KONYA",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "043",
+    "cityName": "KUTAHYA",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "044",
+    "cityName": "MALATYA",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "045",
+    "cityName": "MANISA",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "047",
+    "cityName": "MARDIN",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "033",
+    "cityName": "MERSIN",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "048",
+    "cityName": "MUGLA",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "049",
+    "cityName": "MUS",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "050",
+    "cityName": "NEVSEHIR",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "051",
+    "cityName": "NIGDE",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "052",
+    "cityName": "ORDU",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "080",
+    "cityName": "OSMANIYE",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "053",
+    "cityName": "RIZE",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "054",
+    "cityName": "SAKARYA",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "055",
+    "cityName": "SAMSUN",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "063",
+    "cityName": "SANLIURFA",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "056",
+    "cityName": "SIIRT",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "057",
+    "cityName": "SINOP",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "073",
+    "cityName": "SIRNAK",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "058",
+    "cityName": "SIVAS",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "059",
+    "cityName": "TEKIRDAG",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "060",
+    "cityName": "TOKAT",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "061",
+    "cityName": "TRABZON",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "062",
+    "cityName": "TUNCELI",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "064",
+    "cityName": "USAK",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "065",
+    "cityName": "VAN",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "077",
+    "cityName": "YALOVA",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "066",
+    "cityName": "YOZGAT",
+    "isPinned": false,
+    "pinOrder": 0
+  },
+  {
+    "cityCode": "067",
+    "cityName": "ZONGULDAK",
+    "isPinned": false,
+    "pinOrder": 0
+  }
+]

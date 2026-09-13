@@ -1,0 +1,198 @@
+{
+  "products": [
+    {
+      "fepProductCode": "37  ",
+      "fepProductName": "KURSUZ 97",
+      "webProductName": "K.Benzin&nbsp;95&nbsp;Oktan</br>(TL/Lt)&nbsp;</br>Shell&nbsp;V-Power&nbsp;",
+      "genProductName": "V-Power",
+      "currCode": "TRY",
+      "productSeqHistory": 2
+    },
+    {
+      "fepProductCode": "34  ",
+      "fepProductName": "VP DIESEL",
+      "webProductName": "Motorin&nbsp;</br>(TL/Lt)&nbsp;</br>Shell&nbsp;V-Power&nbsp;Diesel&nbsp;",
+      "genProductName": "VP Diesel",
+      "currCode": "TRY",
+      "productSeqHistory": 4
+    },
+    {
+      "fepProductCode": "71  ",
+      "fepProductName": "KEROSEN",
+      "webProductName": "Gaz</br>Yagı</br>(TL/Lt)",
+      "genProductName": "Gaz Yagi",
+      "currCode": "TRY",
+      "productSeqHistory": 7
+    },
+    {
+      "fepProductCode": "72  ",
+      "fepProductName": "KALYAK",
+      "webProductName": "Kalyak</br>(TL/Kg)",
+      "genProductName": "Kalyak",
+      "currCode": "TRY",
+      "productSeqHistory": 8
+    },
+    {
+      "fepProductCode": "73  ",
+      "fepProductName": "FO6",
+      "webProductName": "Yüksek</br>Kükürtlü</br>Fuel&nbsp;Oil</br>(TL/Kg)",
+      "genProductName": "FO6",
+      "currCode": "TRY",
+      "productSeqHistory": 9
+    },
+    {
+      "fepProductCode": "75  ",
+      "fepProductName": "FO5",
+      "webProductName": "Fuel&nbsp;Oil</br>(TL/Kg)",
+      "genProductName": "FO5",
+      "currCode": "TRY",
+      "productSeqHistory": 10
+    },
+    {
+      "fepProductCode": "5   ",
+      "fepProductName": "LPG",
+      "webProductName": "Otogaz&nbsp;</br>(TL/Lt)</br>Shell&nbsp;Autogas&nbsp;LPG",
+      "genProductName": "LPG",
+      "currCode": "TRY",
+      "productSeqHistory": 11
+    }
+  ],
+  "groups": [
+    {
+      "cityCode": "001",
+      "cityName": "ADANA",
+      "isPinned": false,
+      "pinOrder": 0,
+      "counties": [
+        {
+          "countyCode": "001002",
+          "countyName": "ALADAG",
+          "prices": {
+            "34  ": 90.94,
+            "37  ": 82.06,
+            "5   ": 35.79,
+            "71  ": 102.09,
+            "72  ": 72.9,
+            "73  ": 45.56,
+            "75  ": 51.3
+          }
+        },
+        {
+          "countyCode": "001003",
+          "countyName": "CEYHAN",
+          "prices": {
+            "34  ": 90.94,
+            "37  ": 82.06,
+            "5   ": 35.79,
+            "71  ": 102.09,
+            "72  ": 72.9,
+            "73  ": 45.56,
+            "75  ": 51.3
+          }
+        },
+        {
+          "countyCode": "001017",
+          "countyName": "CUKUROVA",
+          "prices": {
+            "34  ": 90.94,
+            "37  ": 82.06
+          }
+        }
+      ]
+    },
+    {
+      "cityCode": "006",
+      "cityName": "ANKARA",
+      "isPinned": false,
+      "pinOrder": 0,
+      "counties": [
+        {
+          "countyCode": "006018",
+          "countyName": "ALTINDAG",
+          "prices": {
+            "34  ": 90.1,
+            "37  ": 81.21,
+            "5   ": 36.58,
+            "71  ": 102.09,
+            "72  ": 72.9,
+            "73  ": 45.56,
+            "75  ": 51.3
+          }
+        },
+        {
+          "countyCode": "006004",
+          "countyName": "BEYPAZARI",
+          "prices": {
+            "34  ": 90.1,
+            "37  ": 81.21,
+            "5   ": 36.58,
+            "71  ": 102.09,
+            "72  ": 72.9,
+            "73  ": 45.56,
+            "75  ": 51.3
+          }
+        },
+        {
+          "countyCode": "006019",
+          "countyName": "CANKAYA",
+          "prices": {
+            "34  ": 90.1,
+            "37  ": 81.21,
+            "5   ": 36.58,
+            "71  ": 102.09,
+            "72  ": 72.9,
+            "73  ": 45.56,
+            "75  ": 51.3
+          }
+        }
+      ]
+    },
+    {
+      "cityCode": "034",
+      "cityName": "ISTANBUL",
+      "isPinned": false,
+      "pinOrder": 0,
+      "counties": [
+        {
+          "countyCode": "034038",
+          "countyName": "ARNAVUTKOY",
+          "prices": {
+            "34  ": 89.0,
+            "37  ": 80.24,
+            "71  ": 102.09,
+            "72  ": 72.9,
+            "73  ": 45.56,
+            "75  ": 51.3,
+            "5   ": 35.81
+          }
+        },
+        {
+          "countyCode": "034037",
+          "countyName": "ATASEHIR",
+          "prices": {
+            "34  ": 88.84,
+            "37  ": 80.09,
+            "5   ": 35.81,
+            "71  ": 102.09,
+            "72  ": 72.9,
+            "73  ": 45.56,
+            "75  ": 51.3
+          }
+        },
+        {
+          "countyCode": "034008",
+          "countyName": "AVCILAR",
+          "prices": {
+            "34  ": 89.0,
+            "37  ": 80.24,
+            "5   ": 35.81,
+            "71  ": 102.09,
+            "72  ": 72.9,
+            "73  ": 45.56,
+            "75  ": 51.3
+          }
+        }
+      ]
+    }
+  ]
+}
