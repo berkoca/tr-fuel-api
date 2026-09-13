@@ -1,11 +1,10 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import PetrolOfisi from "../library/fuel-company/PetrolOfisi";
 import { UnknownCityError } from "../library/base/FuelCompany";
 import { fixture, mockFetch } from "./support";
 
 const PAGE = "petrolofisi.com.tr/akaryakit-fiyatlari";
 
-afterEach(() => vi.unstubAllGlobals());
 
 describe("PetrolOfisi.getFuelPrices", () => {
   it("parses every city row into the unified shape", async () => {
@@ -80,6 +79,17 @@ describe("PetrolOfisi.getFuelPrices", () => {
     mockFetch({ [PAGE]: { status: 503 } });
 
     await expect(new PetrolOfisi().getFuelPrices()).rejects.toThrow(/503/);
+  });
+
+  it("fetches the page once and serves later calls from the cache", async () => {
+    const stub = mockFetch({ [PAGE]: fixture("petrol-ofisi.html") });
+    const po = new PetrolOfisi();
+
+    await po.getFuelPrices();
+    await po.getFuelPrices({ city: "Ankara" });
+    await po.getCities();
+
+    expect(stub).toHaveBeenCalledTimes(1);
   });
 });
 

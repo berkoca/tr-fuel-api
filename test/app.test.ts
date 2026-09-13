@@ -1,8 +1,8 @@
 import { AddressInfo } from "net";
 import { Server } from "http";
-import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import app from "../app";
-import { calledUrls, fixture, mockFetch } from "./support";
+import { fixture, mockFetch } from "./support";
 
 let server: Server;
 let base: string;
@@ -15,10 +15,9 @@ beforeAll(async () => {
 
 afterAll(() => new Promise<void>((resolve) => server.close(() => resolve())));
 
-afterEach(() => vi.unstubAllGlobals());
 
 function mockUpstreams() {
-  return mockFetch({
+  mockFetch({
     "petrolofisi.com.tr/akaryakit-fiyatlari": fixture("petrol-ofisi.html"),
     "pompafiyat.turkiyeshell.com/api/Public/cities": fixture("shell-cities.json"),
     "pompafiyat.turkiyeshell.com/api/Public/prices": fixture("shell-prices.json"),
@@ -32,7 +31,7 @@ async function get(path: string): Promise<{ status: number; body: any }> {
 
 describe("HTTP API", () => {
   it("serves Petrol Ofisi and Shell prices in the same shape", async () => {
-    const stub = mockUpstreams();
+    mockUpstreams();
 
     const po = await get("/petrol-ofisi/fuel-prices-by-cities?city=Ankara");
     const shell = await get("/shell/fuel-prices-by-cities?city=Ankara");
@@ -40,12 +39,8 @@ describe("HTTP API", () => {
     expect(po.status).toBe(200);
     expect(shell.status).toBe(200);
     expect(po.body).toHaveLength(1);
-    // The Shell API filters server-side; the stub returns the whole fixture,
-    // so assert on the request rather than the row count.
-    expect(calledUrls(stub)).toContain(
-      "https://pompafiyat.turkiyeshell.com/api/Public/prices?citycode=006"
-    );
-    expect(shell.body.length).toBeGreaterThan(0);
+    expect(shell.body).toHaveLength(3);
+    expect(shell.body.every((r: any) => r.city === "ANKARA")).toBe(true);
 
     const shape = (row: any) => Object.keys(row).sort();
     expect(shape(po.body[0])).toEqual(shape(shell.body[0]));

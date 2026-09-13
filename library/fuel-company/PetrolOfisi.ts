@@ -14,6 +14,7 @@ import {
   htmlToLines,
   parsePriceText,
 } from "../base/helpers";
+import { cachedText } from "../base/http";
 
 /**
  * Petrol Ofisi renders its city price list server-side at
@@ -46,18 +47,8 @@ class PetrolOfisi implements FuelCompany {
     return this.parseCities(html);
   }
 
-  private async fetchHtml(): Promise<string> {
-    const response = await fetch(this.fuel_url, {
-      headers: {
-        Accept: "text/html",
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36",
-      },
-    });
-    if (!response.ok) {
-      throw new Error(`Petrol Ofisi responded with ${response.status}`);
-    }
-    return await response.text();
+  private fetchHtml(): Promise<string> {
+    return cachedText(this.fuel_url);
   }
 
   private parseFuelData(html: string): FuelPriceEntry[] {

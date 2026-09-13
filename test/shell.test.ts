@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import Shell from "../library/fuel-company/Shell";
 import { UnknownCityError } from "../library/base/FuelCompany";
 import { calledUrls, fixture, mockFetch } from "./support";
@@ -17,7 +17,6 @@ function mockShell(extra: Record<string, { status: number; body?: string }> = {}
   });
 }
 
-afterEach(() => vi.unstubAllGlobals());
 
 describe("Shell.getFuelPrices", () => {
   it("flattens city groups into one row per county in the unified shape", async () => {
@@ -54,23 +53,34 @@ describe("Shell.getFuelPrices", () => {
     expect(Object.keys(cukurova!.prices).sort()).toEqual(["benzin", "dizel"]);
   });
 
-  it("passes numeric city codes through zero-padded, plus county codes", async () => {
+  it("filters locally by zero-padded city code and county code", async () => {
     const stub = mockShell();
 
-    await new Shell().getFuelPrices({ city: "6", county: "006018" });
+    const rows = await new Shell().getFuelPrices({ city: "6", county: "006018" });
 
-    expect(calledUrls(stub)).toEqual([`https://${API}/prices?citycode=006&countycode=006018`]);
+    expect(rows.map((r) => [r.cityCode, r.county])).toEqual([["006", "ALTINDAG"]]);
+    expect(calledUrls(stub)).toEqual([`https://${API}/prices`]);
   });
 
-  it("resolves a city name to its code via the cities endpoint", async () => {
+  it("resolves a city name via the cities endpoint, then filters locally", async () => {
     const stub = mockShell();
 
-    await new Shell().getFuelPrices({ city: "Şanlıurfa" });
+    const rows = await new Shell().getFuelPrices({ city: "İstanbul" });
 
-    expect(calledUrls(stub)).toEqual([
-      `https://${API}/cities`,
-      `https://${API}/prices?citycode=063`,
-    ]);
+    expect(rows).toHaveLength(3);
+    expect(rows.every((r) => r.cityCode === "034")).toBe(true);
+    expect(calledUrls(stub)).toEqual([`https://${API}/cities`, `https://${API}/prices`]);
+  });
+
+  it("serves repeated calls from the upstream cache", async () => {
+    const stub = mockShell();
+    const shell = new Shell();
+
+    await shell.getFuelPrices();
+    await shell.getFuelPrices({ city: "1" });
+    await shell.getProducts();
+
+    expect(calledUrls(stub)).toEqual([`https://${API}/prices`]);
   });
 
   it("throws UnknownCityError for an unknown city name", async () => {

@@ -1,6 +1,13 @@
 import { readFileSync } from "fs";
 import { join } from "path";
-import { vi } from "vitest";
+import { afterEach, vi } from "vitest";
+import { upstreamCache } from "../library/base/cache";
+
+// Every test file gets a clean fetch stub and an empty upstream cache.
+afterEach(() => {
+  vi.unstubAllGlobals();
+  upstreamCache.clear();
+});
 
 export function fixture(name: string): string {
   return readFileSync(join(__dirname, "fixtures", name), "utf-8");

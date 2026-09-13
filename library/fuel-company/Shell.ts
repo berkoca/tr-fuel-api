@@ -8,6 +8,7 @@ import {
   UnknownCityError,
 } from "../base/FuelCompany";
 import { classifyFuel, normalizeText, normalizeUnit } from "../base/helpers";
+import { cachedJson } from "../base/http";
 
 interface ShellProduct {
   fepProductCode: string;
@@ -58,27 +59,26 @@ export interface County {
  * (an iframe of https://pompafiyat.turkiyeshell.com/prices). The panel is a
  * React app fed by a public JSON API, so we read that API directly.
  *
- * Prices are published per county (ilçe), grouped by city (il).
+ * Prices are published per county (ilçe), grouped by city (il). The full
+ * price list is fetched once and cached; filtering happens locally so every
+ * request shares the same cache entry.
  */
 class Shell implements FuelCompany {
   public readonly brand = "shell";
   private api_url: string = "https://pompafiyat.turkiyeshell.com/api/Public";
 
   public async getFuelPrices(filter: PriceFilter = {}): Promise<FuelPriceEntry[]> {
-    const params = new URLSearchParams();
     const cityCode = await this.resolveCityCode(filter.city);
-    if (cityCode) params.set("citycode", cityCode);
-    if (filter.county) params.set("countycode", filter.county);
-
-    const query = params.toString();
-    const data = await this.fetchJson<ShellPricesResponse>(
-      `/prices${query ? `?${query}` : ""}`
-    );
+    const data = await this.fetchJson<ShellPricesResponse>("/prices");
     const products = this.parseProducts(data.products);
 
     const entries: FuelPriceEntry[] = [];
     for (const group of data.groups) {
+      if (cityCode && group.cityCode !== cityCode) continue;
+
       for (const county of group.counties) {
+        if (filter.county && county.countyCode !== filter.county) continue;
+
         entries.push({
           brand: this.brand,
           cityCode: group.cityCode,
@@ -112,17 +112,11 @@ class Shell implements FuelCompany {
     return this.parseProducts(data.products);
   }
 
-  private async fetchJson<T>(path: string): Promise<T> {
-    const response = await fetch(this.api_url + path, {
-      headers: { Accept: "application/json" },
-    });
-    if (!response.ok) {
-      throw new Error(`Shell API responded with ${response.status} for ${path}`);
-    }
-    return (await response.json()) as T;
+  private fetchJson<T>(path: string): Promise<T> {
+    return cachedJson<T>(this.api_url + path);
   }
 
-  /** The API wants zero-padded 3-digit codes; also accept a city name. */
+  /** The API uses zero-padded 3-digit codes; also accept a city name. */
   private async resolveCityCode(city?: string): Promise<string | undefined> {
     if (!city) return undefined;
     if (/^\d+$/.test(city)) return city.padStart(3, "0");
