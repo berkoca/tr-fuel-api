@@ -1,8 +1,19 @@
 {
   "name": "tr-fuel-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "REST API for current fuel pump prices in Turkey (Petrol Ofisi, Shell)",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "ts-node index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2"
@@ -14,11 +25,6 @@
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4",
     "vitest": "^5.0.0"
-  },
-  "scripts": {
-    "dev": "ts-node index.ts",
-    "test": "vitest run",
-    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
